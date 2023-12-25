@@ -6,7 +6,7 @@ import { useUser } from '@clerk/nextjs'
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
 import {db, storage} from '@/firebase'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
-
+import toast from 'react-hot-toast'
 const Dropzone = () => {
     const [loading, setLoading] = useState(false) //loading for the image once we drop it
     const {isLoaded, isSignedIn, user} = useUser()
@@ -30,6 +30,7 @@ const Dropzone = () => {
             return 
         }
         setLoading(true)
+        const toastId = toast.loading("Uploading...")
         // add document  -> users/user123/files
         const docRef = await addDoc(collection(db,"users", user.id, "files" ),{
             userId:user.id,
@@ -46,6 +47,9 @@ const Dropzone = () => {
           await updateDoc(doc(db, "users", user.id, "files", docRef.id),{
             downloadURL:downloadURL
           })
+        })
+        toast.success("Uploaded Successfully!",{
+          id:toastId
         })
         setLoading(false)
     }

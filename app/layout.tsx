@@ -4,6 +4,7 @@ import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
 import Header from '@/components/Header'
 import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from 'react-hot-toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,7 +31,8 @@ export default function RootLayout({
 
         <Header/>
         {children}
-          </ThemeProvider>
+        <Toaster/>
+      </ThemeProvider>
 
         </body>
     </html>
