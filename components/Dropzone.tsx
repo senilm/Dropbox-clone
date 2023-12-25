@@ -3,6 +3,9 @@ import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import DropzoneComponent from 'react-dropzone'
 import { useUser } from '@clerk/nextjs'
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore'
+import {db, storage} from '@/firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 
 const Dropzone = () => {
     const [loading, setLoading] = useState(false) //loading for the image once we drop it
@@ -26,16 +29,29 @@ const Dropzone = () => {
         if (!user){
             return 
         }
-
         setLoading(true)
-
-        // do the task
-        
-
+        // add document  -> users/user123/files
+        const docRef = await addDoc(collection(db,"users", user.id, "files" ),{
+            userId:user.id,
+            filename: selectedFile.name,
+            fullname:user.fullName,
+            profileImg: user.imageUrl,
+            timestamp:serverTimestamp(),
+            type:selectedFile.type,
+            size: selectedFile.size
+        })
+        const imageRef = ref(storage, `users/${user.id}/files/${docRef.id}`)
+        uploadBytes(imageRef, selectedFile).then(async (snapshot)=>{
+          const downloadURL = await getDownloadURL(imageRef)
+          await updateDoc(doc(db, "users", user.id, "files", docRef.id),{
+            downloadURL:downloadURL
+          })
+        })
         setLoading(false)
     }
+
   return (
-    <DropzoneComponent minSize={0} maxSize={maxSize} onDrop={acceptedFiles => console.log(acceptedFiles)}>
+    <DropzoneComponent minSize={0} maxSize={maxSize} onDrop={onDrop}>
   {({getRootProps, getInputProps,isDragActive,isDragReject,fileRejections}) => {
 
     const isFileTooLarge = fileRejections.length > 0 && fileRejections[0].file.size > maxSize
@@ -56,3 +72,5 @@ const Dropzone = () => {
 }
 
 export default Dropzone
+
+// drop on the dropzone -> read file -> firestore db ma pela entry padvani e particular user ni -> firestore storage ma upload karvani file  -> file upload karya pachi eni je download url male -> ene je entry padi apde firestore db ma ema update karai devanu
