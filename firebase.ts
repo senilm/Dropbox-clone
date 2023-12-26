@@ -9,7 +9,7 @@ import {getStorage} from "firebase/storage"
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB-Bp235Cvlx6hggXbMpLnHoV8dTAGnN_s",
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
   authDomain: "dropbox-clone-4fbbb.firebaseapp.com",
   projectId: "dropbox-clone-4fbbb",
   storageBucket: "dropbox-clone-4fbbb.appspot.com",
