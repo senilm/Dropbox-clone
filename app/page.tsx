@@ -6,11 +6,11 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <main className="">
+    <main className=" h-[100vh] bg-[#1E1919]">
       <div className='flex flex-col lg:flex-row items-center bg-[#1E1919] dark:bg-slate-800'>
         {/* left side */}
-        <div className=' p-10 flex flex-col bg-[#2B2929] dark:bg-slate-800 text-white space-y-5'>
-          <h1 className='text-5xl font-bold'>
+        <div className=' p-10 flex flex-col bg-[#2B2929] dark:bg-slate-800 text-white space-y-5 rounded-lg'>
+          <h1 className='text-5xl max-lg:text-3xl font-bold'>
           Welcome to Dropbox.<br/>
           <br/>
           Just Drag-n-Drop your files to share them.All in one place

@@ -42,7 +42,6 @@ function DeleteModal() {
         try {
             deleteObject(fileRef).then(async ()=>{
                 deleteDoc(doc(db, "users",user.id, "files", fileId)).then(()=>{
-                    console.log("deleted");
                     toast.success("Deleted Successfully!",{
                         id:toastId
                     })
